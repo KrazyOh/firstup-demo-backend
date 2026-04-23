@@ -27,4 +27,36 @@ async def firstup_auth_check() -> FirstupAuthCheckResponse:
     publish_service = DemoPublishService(settings)
 
     if not publish_service.firstup_client.is_configured():
-        return FirstupAuthCheckResponse
+        return FirstupAuthCheckResponse(
+            ok=False,
+            configured=False,
+            message="Firstup credentials are not configured.",
+        )
+
+    try:
+        publish_service.can_authenticate_to_firstup()
+    except Exception:
+        return FirstupAuthCheckResponse(
+            ok=False,
+            configured=True,
+            message="Firstup authentication failed.",
+        )
+
+    return FirstupAuthCheckResponse(
+        ok=True,
+        configured=True,
+        message="Firstup authentication succeeded.",
+    )
+
+
+@app.post("/publish-demo-content", response_model=PublishDemoContentResponse)
+async def publish_demo_content(
+    payload: PublishDemoContentRequest,
+) -> PublishDemoContentResponse:
+    settings = load_firstup_settings()
+    publish_service = DemoPublishService(settings)
+    publish_service.prepare_demo_content(payload)
+
+    return PublishDemoContentResponse(
+        success=True,
+        received_payload=
