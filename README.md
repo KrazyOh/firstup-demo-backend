@@ -1,14 +1,13 @@
-# Firstup Demo FastAPI Backend
+## Environment variables
 
-Small FastAPI backend scaffold for a Firstup demo workflow. This version validates the request payload and echoes the validated data back. It does not publish to Firstup yet.
+Keep secrets in environment variables only.
 
-## Requirements
-
-- Python 3.11+
-
-## Install dependencies
+Example:
 
 ```bash
-python3.11 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
+export FIRSTUP_REGION="US1"
+export FIRSTUP_CLIENT_ID="your-client-id"
+export FIRSTUP_CLIENT_SECRET="your-client-secret"
+export FIRSTUP_AUTH_URL="https://auth.socialchorus.com/oauth/token"
+export FIRSTUP_API_BASE_URL="https://partner.socialchorus.com"
+export FIRSTUP_ENABLE_PUBLISHING="false"
