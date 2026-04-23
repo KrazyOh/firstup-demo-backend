@@ -1,7 +1,11 @@
 from fastapi import FastAPI
 
 from app.config import load_firstup_settings
-from app.models import PublishDemoContentRequest, PublishDemoContentResponse
+from app.models import (
+    FirstupAuthCheckResponse,
+    PublishDemoContentRequest,
+    PublishDemoContentResponse,
+)
 from app.publish_service import DemoPublishService
 
 
@@ -17,16 +21,10 @@ async def health_check() -> dict[str, bool]:
     return {"ok": True}
 
 
-@app.post("/publish-demo-content", response_model=PublishDemoContentResponse)
-async def publish_demo_content(
-    payload: PublishDemoContentRequest,
-) -> PublishDemoContentResponse:
+@app.get("/firstup-auth-check", response_model=FirstupAuthCheckResponse)
+async def firstup_auth_check() -> FirstupAuthCheckResponse:
     settings = load_firstup_settings()
     publish_service = DemoPublishService(settings)
-    publish_service.prepare_demo_content(payload)
 
-    return PublishDemoContentResponse(
-        success=True,
-        received_payload=payload,
-        message="Demo content received successfully",
-    )
+    if not publish_service.firstup_client.is_configured():
+        return FirstupAuthCheckResponse
