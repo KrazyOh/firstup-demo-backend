@@ -59,4 +59,6 @@ async def publish_demo_content(
 
     return PublishDemoContentResponse(
         success=True,
-        received_payload=
+        received_payload=payload,
+        message="Demo content received successfully",
+    )
