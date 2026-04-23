@@ -3,6 +3,8 @@ import re
 
 from pydantic import BaseModel, Field, field_validator, model_validator
 
+from app.image_keys import ALLOWED_IMAGE_KEYS
+
 
 HEX_COLOR_PATTERN = re.compile(r"^#[0-9A-Fa-f]{6}$")
 
@@ -33,6 +35,13 @@ class ContentItem(BaseModel):
     summary: str = Field(..., min_length=1)
     body: str = Field(..., min_length=1)
     image_key: str = Field(..., min_length=1)
+
+    @field_validator("image_key")
+    @classmethod
+    def validate_image_key(cls, value: str) -> str:
+        if value not in ALLOWED_IMAGE_KEYS:
+            raise ValueError("must be an approved image_key from the image library")
+        return value
 
 
 class Personas(BaseModel):
