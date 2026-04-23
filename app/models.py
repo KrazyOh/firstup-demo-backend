@@ -32,6 +32,7 @@ class ContentItem(BaseModel):
     title: str = Field(..., min_length=1)
     summary: str = Field(..., min_length=1)
     body: str = Field(..., min_length=1)
+    image_key: str = Field(..., min_length=1)
 
 
 class Personas(BaseModel):
@@ -41,6 +42,7 @@ class Personas(BaseModel):
 
 class PublishDemoContentRequest(BaseModel):
     business_type: str = Field(..., min_length=1)
+    use_case: str = Field(..., min_length=1)
     personas: Personas
     brand_colors: BrandColors
     content_items: List[ContentItem] = Field(..., min_length=1)
