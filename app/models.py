@@ -86,3 +86,9 @@ class PublishDemoContentResponse(BaseModel):
     success: bool = True
     received_payload: PublishDemoContentRequest
     message: str
+
+
+class FirstupAuthCheckResponse(BaseModel):
+    ok: bool
+    configured: bool
+    message: str
