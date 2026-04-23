@@ -135,3 +135,50 @@ def test_publish_demo_content_succeeds_with_valid_payload() -> None:
 
 
 def test_publish_demo_content_fails_when_required_field_is_missing() -> None:
+    payload = build_valid_payload()
+    del payload["business_type"]
+
+    response = client.post("/publish-demo-content", json=payload)
+
+    assert response.status_code == 422
+
+
+def test_publish_demo_content_fails_with_invalid_brand_color_hex() -> None:
+    payload = build_valid_payload()
+    payload["brand_colors"]["primary"] = "blue"
+
+    response = client.post("/publish-demo-content", json=payload)
+
+    assert response.status_code == 422
+    assert "hex color" in str(response.json())
+
+
+def test_publish_demo_content_fails_when_content_item_names_are_incomplete() -> None:
+    payload = build_valid_payload()
+    payload["content_items"] = payload["content_items"][:-1]
+
+    response = client.post("/publish-demo-content", json=payload)
+
+    assert response.status_code == 422
+    assert "exactly these names" in str(response.json())
+
+
+def test_publish_demo_content_fails_when_content_item_names_are_duplicated() -> None:
+    payload = build_valid_payload()
+    duplicated_payload = deepcopy(payload)
+    duplicated_payload["content_items"][4]["name"] = "persona_1_department"
+
+    response = client.post("/publish-demo-content", json=duplicated_payload)
+
+    assert response.status_code == 422
+    assert "duplicate names" in str(response.json())
+
+
+def test_publish_demo_content_fails_with_unapproved_image_key() -> None:
+    payload = build_valid_payload()
+    payload["content_items"][0]["image_key"] = "made_up_image_key"
+
+    response = client.post("/publish-demo-content", json=payload)
+
+    assert response.status_code == 422
+    assert "approved image_key" in str(response.json())
