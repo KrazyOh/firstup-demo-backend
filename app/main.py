@@ -1,8 +1,8 @@
-import os
-
 from fastapi import FastAPI
 
+from app.config import load_firstup_settings
 from app.models import PublishDemoContentRequest, PublishDemoContentResponse
+from app.publish_service import DemoPublishService
 
 
 app = FastAPI(
@@ -21,8 +21,9 @@ async def health_check() -> dict[str, bool]:
 async def publish_demo_content(
     payload: PublishDemoContentRequest,
 ) -> PublishDemoContentResponse:
-    # Placeholder for future env-based integration settings.
-    _ = os.getenv("FIRSTUP_API_KEY")
+    settings = load_firstup_settings()
+    publish_service = DemoPublishService(settings)
+    publish_service.prepare_demo_content(payload)
 
     return PublishDemoContentResponse(
         success=True,
