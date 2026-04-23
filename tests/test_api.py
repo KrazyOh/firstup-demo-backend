@@ -11,6 +11,7 @@ client = TestClient(app)
 def build_valid_payload() -> dict:
     return {
         "business_type": "Retail",
+        "use_case": "safety",
         "personas": {
             "persona_1": {
                 "persona_type": "frontline",
@@ -36,30 +37,41 @@ def build_valid_payload() -> dict:
                 "title": "Operations Update",
                 "summary": "Quick update for operations teams.",
                 "body": "Important operational guidance for store teams.",
+                "image_key": "safety_frontline_operations_01",
             },
             {
                 "name": "persona_1_city",
                 "title": "Chicago Team News",
                 "summary": "Updates for Chicago employees.",
                 "body": "City-specific information for the Chicago team.",
+                "image_key": "safety_frontline_chicago_01",
             },
             {
                 "name": "persona_2_department",
                 "title": "People Team Update",
                 "summary": "News for the People department.",
                 "body": "Department-specific information for HR leaders.",
+                "image_key": "safety_corporate_people_01",
             },
             {
                 "name": "persona_2_city",
                 "title": "Dallas Office News",
                 "summary": "Updates for Dallas employees.",
                 "body": "City-specific information for the Dallas office.",
+                "image_key": "safety_corporate_dallas_01",
             },
             {
                 "name": "company_wide",
                 "title": "Company Update",
                 "summary": "News for everyone.",
-                "body": "A company-wide message for all employees.",
+                "body": (
+                    "<h1>Safety Starts With Every Shift</h1>"
+                    "<p>For frontline teams, this week introduces updated pre-shift "
+                    "checklists and guest-area walkthrough expectations.</p>"
+                    "<p>For corporate teams, leaders are launching a new safety "
+                    "communications toolkit and reporting cadence.</p>"
+                ),
+                "image_key": "safety_companywide_01",
             },
         ],
     }
